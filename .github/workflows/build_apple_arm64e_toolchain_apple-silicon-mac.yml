@@ -15,7 +15,14 @@ jobs:
         uses: actions/checkout@v4.1.6
         with:
           ref: "apple-arm64e-upstream-next"
-          submodules: "recursive"
+
+      - name: Update submodule URLs
+        shell: bash
+        run: |
+          git config -f .gitmodules submodule.llvm/include/llvm/Transforms/Obfuscation.url https://github.com/MandoStop/Hikari-LLVM15-Headers.git
+          git config -f .gitmodules submodule.llvm/lib/Transforms/Obfuscation.url https://github.com/MandoStop/Hikari-LLVM15-Core.git
+          git submodule sync --recursive
+          git submodule update --init --force --depth=1 --recursive
 
       - name: Setup python
         uses: actions/setup-python@v5
